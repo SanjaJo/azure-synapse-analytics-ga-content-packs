@@ -5,7 +5,7 @@
     "uniqueSuffix": {
       "type": "String",
       "metadata": {
-        "description": "Suffix added to all resource name to make them unique. Max 4 chars"
+        "description": "Suffix added to all resource name to make them unique."
       }
     }
   },

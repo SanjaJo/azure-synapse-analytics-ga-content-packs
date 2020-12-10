@@ -65,7 +65,7 @@ $global:tokenTimes = [ordered]@{
 
 Write-Information "Creating the SalesTelemetry table"
 
-$kustoClusterName = "asagadataexplorer$($uniqueId)"
+$kustoClusterName = "asagadataexplorer$($uniqueId)".substring(0, 22)
 $kustoDatabaseName = "ASA-Data-Explorer-DB-01"
 $kustoStatement = ".create table SalesTelemetry ( CustomerId:int32, ProductId:int32, Timestamp:datetime, Url:string)"
 
@@ -76,7 +76,7 @@ Invoke-RestMethod -Uri https://$kustoClusterName.$($location).kusto.windows.net/
 # Set the Azure Synapse Analytics GA Labs service principal as admin on the Kusto database
 
 Write-Information "Making the service principal 'Azure Synapse Analytics GA Labs' an admin on the Kusto database"
-$app = ((az ad sp list --display-name "Azure Synapse Analytics GA Labs") | ConvertFrom-Json)[0]
+$app = ((az ad sp list --display-name "Azure Synapse Analytics GA Labs $($uniqueId)") | ConvertFrom-Json)[0]
 $kustoStatement = ".add database ['$($kustoDatabaseName)'] admins ('aadapp=$($app.appId)')"
 $body = "{ db: ""$kustoDatabaseName"", csl: ""$kustoStatement"" }"
 Invoke-RestMethod -Uri https://$kustoClusterName.$($location).kusto.windows.net/v1/rest/mgmt -Method POST -Body $body -Headers @{ Authorization="Bearer $token" } -ContentType "application/json"

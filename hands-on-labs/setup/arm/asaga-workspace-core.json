@@ -5,19 +5,14 @@
     "uniqueSuffix": {
       "type": "String",
       "metadata": {
-        "description": "Suffix added to all resource name to make them unique."
-      }
-    },
-    "sqlAdministratorLoginPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Password for SQL Admin"
+        "description": "Suffix added to all resource name to make them unique. Max 4 chars"
       }
     }
   },
   "variables": {
     "location": "[resourceGroup().location]",
     "sqlAdministratorLogin": "asaga.sql.admin",
+    "sqlAdministratorLoginPassword": "Password01.",
     "workspaceName": "[concat('asagaworkspace', parameters('uniqueSuffix'))]",
     "adlsStorageAccountName": "[concat('asagadatalake', parameters('uniqueSuffix'))]",
     "defaultDataLakeStorageFilesystemName": "workspace",
@@ -62,7 +57,7 @@
       ],
       "properties": {
         "contentType": "text/plain",
-        "value": "[parameters('sqlAdministratorLoginPassword')]",
+        "value": "[variables('sqlAdministratorLoginPassword')]",
         "attributes": {
           "enabled": true
         }
@@ -152,7 +147,7 @@
           "filesystem": "[variables('defaultDataLakeStorageFilesystemName')]"
         },
         "sqlAdministratorLogin": "[variables('sqlAdministratorLogin')]",
-        "sqlAdministratorLoginPassword": "[parameters('sqlAdministratorLoginPassword')]"
+        "sqlAdministratorLoginPassword": "[variables('sqlAdministratorLoginPassword')]"
       },
       "resources": [
         {

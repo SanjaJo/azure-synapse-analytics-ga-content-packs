@@ -129,7 +129,14 @@ Set-AzKeyVaultAccessPolicy -ResourceGroupName $resourceGroupName -VaultName $key
 Set-AzKeyVaultAccessPolicy -ResourceGroupName $resourceGroupName -VaultName $keyVaultName -ObjectId $id -PermissionsToSecrets set,delete,get,list
 
 #remove need to ask for the password in script.
-$global:sqlPassword = $(Get-AzKeyVaultSecret -VaultName $keyVaultName -Name $keyVaultSQLUserSecretName).SecretValueText
+#$global:sqlPassword = $(Get-AzKeyVaultSecret -VaultName $keyVaultName -Name $keyVaultSQLUserSecretName).SecretValueText
+$secret = Get-AzKeyVaultSecret -VaultName $keyVaultName -Name $keyVaultSQLUserSecretName
+$ssPtr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($secret.SecretValue)
+try {
+        $global:sqlPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringBSTR($ssPtr)
+} finally {
+   [System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($ssPtr)
+}
 
 #Write-Information "Create SQL-USER-ASA Key Vault Secret"
 #$secretValue = ConvertTo-SecureString $sqlPassword -AsPlainText -Force
@@ -419,7 +426,7 @@ foreach ($dataset in $loadingDatasets.Keys) {
 
 Write-Information "Preparing environment for labs"
 
-$app = (az ad sp create-for-rbac -n "Azure Synapse Analytics GA Labs" --skip-assignment) | ConvertFrom-Json
+$app = (az ad sp create-for-rbac -n "Azure Synapse Analytics GA Labs $($uniqueId)" --skip-assignment) | ConvertFrom-Json
 
 $secretValue = ConvertTo-SecureString $app.password -AsPlainText -Force
 Set-AzKeyVaultSecret -VaultName $keyVaultName -Name "ASA-GA-LABS" -SecretValue $secretValue

@@ -121,6 +121,7 @@ $result = Run-Pipeline -WorkspaceName $workspaceName -Name $loadingPipelineName
 $result = Wait-ForPipelineRun -WorkspaceName $workspaceName -RunId $result.runId
 $result
 
+<#
 Write-Information "Deleting pipeline $($loadingPipelineName)"
 
 $result = Delete-ASAObject -WorkspaceName $workspaceName -Category "pipelines" -Name $loadingPipelineName
@@ -138,3 +139,4 @@ Write-Information "Deleting linked service for Kusto database"
 
 $result = Delete-ASAObject -WorkspaceName $workspaceName -Category "linkedservices" -Name $linkedServiceName
 Wait-ForOperation -WorkspaceName $workspaceName -OperationId $result.operationId
+#>

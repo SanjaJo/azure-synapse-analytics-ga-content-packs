@@ -351,7 +351,7 @@ Write-Information "Create pipeline to load the SQL pool"
 $params = @{
         BLOB_STORAGE_LINKED_SERVICE_NAME = $dataLakeAccountName
 }
-$loadingPipelineName = "Setup - Load SQL Pool (global)"
+$loadingPipelineName = "Setup Load SQL Pool global"
 $fileName = "load_sql_pool_from_data_lake"
 
 Write-Information "Creating pipeline $($loadingPipelineName)"
@@ -367,17 +367,20 @@ $result
 
 Ensure-ValidTokens
 
+<#
 Write-Information "Deleting pipeline $($loadingPipelineName)"
 
 $result = Delete-ASAObject -WorkspaceName $workspaceName -Category "pipelines" -Name $loadingPipelineName
 Wait-ForOperation -WorkspaceName $workspaceName -OperationId $result.operationId
+#>
 
+<#
 foreach ($dataset in $loadingDatasets.Keys) {
         Write-Information "Deleting dataset $($dataset)"
         $result = Delete-ASAObject -WorkspaceName $workspaceName -Category "datasets" -Name $dataset
         Wait-ForOperation -WorkspaceName $workspaceName -OperationId $result.operationId
 }
-
+#>
 
 Write-Information "Create data sets for PoC data load in SQL pool $($sqlPoolName)"
 
@@ -397,7 +400,7 @@ Write-Information "Create pipeline to load customer data into the SQL pool"
 $params = @{
         BLOB_STORAGE_LINKED_SERVICE_NAME = $dataLakeAccountName
 }
-$loadingPipelineName = "Setup - Load SQL Pool (customer)"
+$loadingPipelineName = "Setup Load SQL Pool customer"
 $fileName = "import_poc_customer_data"
 
 Write-Information "Creating pipeline $($loadingPipelineName)"
@@ -411,6 +414,7 @@ $result = Run-Pipeline -WorkspaceName $workspaceName -Name $loadingPipelineName
 $result = Wait-ForPipelineRun -WorkspaceName $workspaceName -RunId $result.runId
 $result
 
+<#
 Write-Information "Deleting pipeline $($loadingPipelineName)"
 
 $result = Delete-ASAObject -WorkspaceName $workspaceName -Category "pipelines" -Name $loadingPipelineName
@@ -421,6 +425,7 @@ foreach ($dataset in $loadingDatasets.Keys) {
         $result = Delete-ASAObject -WorkspaceName $workspaceName -Category "datasets" -Name $dataset
         Wait-ForOperation -WorkspaceName $workspaceName -OperationId $result.operationId
 }
+#>
 
 
 

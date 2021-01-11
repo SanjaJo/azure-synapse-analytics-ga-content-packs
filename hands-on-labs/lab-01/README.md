@@ -465,7 +465,7 @@ In Synapse Studio, select the `Integrate` hub on the left side and open the `Pro
 - **Azure subscription**: ensure the right Azure subscription is selected (the one containing your resource group).
 - **Storage account name**: select the `asagadatalake<uniqu_prefix>` account (where `<unique_suffix>` is the unique suffix you provided when deploying the Synapse Analytics workspace).
 - **Container name**: enter `wwi-02`.
-- **Blob path begins with**: enter `sale-small-product-quantity-forecast/ProductQuantity`.
+- **Blob path begins with**: enter `sale-small-product-quantity-forecast/`.
 - **Event**: select `Blob created`.
 
 Select `Continue` to create the trigger, then select once more `Continue` in the `Data preview` dialog, and then `OK` to publish the trigger.

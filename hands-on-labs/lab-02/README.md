@@ -386,7 +386,7 @@ Run the new cell. It will load online telemetry data for December 1st, 2019, fro
 Add a new cell with the following code:
 
 ```python
-from pyspark.sql import functions as F
+from pyspark.sql import functions as f
 
 df = telemetry_df.join(sales_df, on=['CustomerId', 'ProductId'], how='inner') \
     .withColumn('TimeDelta', col('TransactionTime').cast('long') - col('Timestamp').cast('long')) \

@@ -5,7 +5,7 @@
         "location": "[resourceGroup().location]",
         "uniqueSuffix": "[resourceGroup().tags['DeploymentId']]",
         "clusterInitialName" : "[concat('asagadataex', variables('uniqueSuffix'))]",
-        "clusterName": "[if(greaterOrEquals(length(variables('clusterInitialName')),22) , substring(concat('asagadataex', variables('uniqueSuffix')),0,22), variables('clusterInitialName')) ]"
+        "clusterName": "[if(greaterOrEquals(length(variables('clusterInitialName')),22) , substring(variables('clusterInitialName'),0,22), variables('clusterInitialName')) ]"
     },
     "resources": [
         {
